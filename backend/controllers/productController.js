@@ -73,5 +73,17 @@ const removeProduct = async (req, res) => {
   }
 };
 //function for single product info
-const singleProduct = async (req, res) => {};
+const singleProduct = async (req, res) => {
+  try {
+    const {productId}=req.body;
+    const product=await Product.findById(productId)
+    // if(!product){
+    //   res.json({success:false,message:"Product doesnot found"})
+    // }
+    res.json({success:true,product})
+  } catch (error) {
+    console.log(error);
+    res.json({success:false,message:error.message})
+  }
+};
 export { addProduct, listProducts, removeProduct, singleProduct };
