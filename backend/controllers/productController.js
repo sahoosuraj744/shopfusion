@@ -16,6 +16,10 @@ const addProduct = async (req, res) => {
     const image2 = req.files.image2 && req.files.image2[0];
     const image3 = req.files.image3 && req.files.image3[0];
     const image4 = req.files.image4 && req.files.image4[0];
+    // const image1 = req.files?.image1?.[0];
+    // const image2 = req.files?.image2?.[0];
+    // const image3 = req.files?.image3?.[0];
+    // const image4 = req.files?.image4?.[0];
     const images = [image1, image2, image3, image4].filter(
       (item) => item != undefined,
     );
@@ -61,11 +65,11 @@ const listProducts = async (req, res) => {
 //function for remove products
 const removeProduct = async (req, res) => {
   try {
-     const deleteProduct=await Product.findByIdAndDelete(req.body._id);
-     if(!deleteProduct){
-      return res.json({success:false,message:"Product doesnot found"})
-     }
-    
+    const deleteProduct = await Product.findByIdAndDelete(req.body.id);
+    if (!deleteProduct) {
+      return res.json({ success: false, message: "Product doesnot found" });
+    }
+
     res.json({ success: true, message: "Product removed successfully" });
   } catch (error) {
     console.log(error);
@@ -75,15 +79,15 @@ const removeProduct = async (req, res) => {
 //function for single product info
 const singleProduct = async (req, res) => {
   try {
-    const {productId}=req.body;
-    const product=await Product.findById(productId)
+    const { productId } = req.body;
+    const product = await Product.findById(productId);
     // if(!product){
     //   res.json({success:false,message:"Product doesnot found"})
     // }
-    res.json({success:true,product})
+    res.json({ success: true, product });
   } catch (error) {
     console.log(error);
-    res.json({success:false,message:error.message})
+    res.json({ success: false, message: error.message });
   }
 };
 export { addProduct, listProducts, removeProduct, singleProduct };
