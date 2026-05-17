@@ -2,13 +2,29 @@ import userModel from "../models/userModel.js";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-const createToken=(id)=>{
-    return jwt.sign({id},process.env.JWT_SECRET)
-}
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET);
+};
 //route for user login
 const loginUser = async (req, res) => {
   try {
-  } catch (error) {}
+    const { email, password } = req.body;
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User does not exist" });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) {
+      const token = createToken(user._id);
+      console.log(token);
+      return res.status(200).json({ message: "Login successful", token });
+    } else {
+      return res.status(400).json({ message: "Invalid Password" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Login failed" });
+  }
 };
 //route for user registration
 const registerUser = async (req, res) => {
@@ -32,13 +48,13 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new userModel({ name, email, password: hashedPassword });
     const user = await newUser.save();
-    const token=createToken(user._id);
+    const token = createToken(user._id);
     console.log(token);
 
     res.status(201).json({ message: "User registered successfully", token });
   } catch (error) {
     console.log(error);
-   
+
     res.status(500).json({ success: false, message: "Registration failed" });
   }
 };
