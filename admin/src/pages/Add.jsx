@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import axios from "axios";
 import { backendUrl } from "../App";
+import { toast } from "react-toastify";
 const Add = ({token}) => {
   const [image1, setImage1] = useState(false);
   const [image2, setImage2] = useState(false);
@@ -31,7 +32,18 @@ const Add = ({token}) => {
       formData.append("bestSeller", bestSeller);
       const token = localStorage.getItem("token");
       const response = await axios.post(backendUrl + "/api/product/add", formData,{headers:{token}});
-      console.log("Product added:", response.data);
+      console.log(response);
+      if(response.data.message){
+        toast.success(response.data.message);
+        setImage1(false);
+        setImage2(false);
+        setImage3(false);
+        setImage4(false);
+        setName("");
+        setDescription("");
+        setPrice("");
+      }else{toast.error(response.data.message);
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
