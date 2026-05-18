@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 import axios from "axios";
 import { backendUrl } from "../App";
 import { toast } from "react-toastify";
-const Add = ({token}) => {
+const Add = ({ token }) => {
   const [image1, setImage1] = useState(false);
   const [image2, setImage2] = useState(false);
   const [image3, setImage3] = useState(false);
@@ -31,9 +31,13 @@ const Add = ({token}) => {
       formData.append("sizes", JSON.stringify(sizes));
       formData.append("bestSeller", bestSeller);
       const token = localStorage.getItem("token");
-      const response = await axios.post(backendUrl + "/api/product/add", formData,{headers:{token}});
+      const response = await axios.post(
+        backendUrl + "/api/product/add",
+        formData,
+        { headers: { token } },
+      );
       console.log(response);
-      if(response.data.message){
+      if (response.data.message) {
         toast.success(response.data.message);
         setImage1(false);
         setImage2(false);
@@ -42,7 +46,8 @@ const Add = ({token}) => {
         setName("");
         setDescription("");
         setPrice("");
-      }else{toast.error(response.data.message);
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -171,17 +176,21 @@ const Add = ({token}) => {
       </div>
       <div>
         <p className="mb-2">Product Sizes</p>
-        <div className="flex  gap-2">
-          <div
+        <div className="flex gap-2">
+           <div
             onClick={() =>
               setSizes((prev) =>
                 prev.includes("S")
                   ? prev.filter((item) => item !== "S")
-                  : [...prev],
+                  : [...prev, "S"],
               )
             }
           >
-            <p className="bg-slate-200 px-3 py-1 cursor-pointer">S</p>
+            <p
+              className={`  ${sizes.includes("S") ? "bg-pink-300" : "bg-slate-200"} px-3 py-1 cursor-pointer`}
+            >
+              S
+            </p>
           </div>
           <div
             onClick={() =>
