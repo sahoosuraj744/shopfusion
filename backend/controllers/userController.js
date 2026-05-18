@@ -51,7 +51,7 @@ const registerUser = async (req, res) => {
     const token = createToken(user._id);
     console.log(token);
 
-    res.status(201).json({ message: "User registered successfully", token });
+    res.status(201).json({ success: true, message: "User registered successfully", token });
   } catch (error) {
     console.log(error);
 
@@ -64,9 +64,9 @@ const adminLogin = async (req, res) => {
     const {email,password}=req.body;
     if(email===process.env.ADMIN_EMAIL && password===process.env.ADMIN_PASSWORD){
         const token = jwt.sign(email+password, process.env.JWT_SECRET);
-        return res.status(200).json({ message: "Admin login successful", token });
+        return res.status(200).json({ success: true, message: "Admin login successful", token });
     }else{
-        return res.status(400).json({ message: "Invalid admin credentials" });
+        return res.status(400).json({ success: false, message: "Invalid admin credentials" });
     }
   } catch (error) {
     console.log(error);
