@@ -46,30 +46,30 @@ const addProduct = async (req, res) => {
     const product = new productModel(productData);
     await product.save();
 
-    res.status(200).json({ message: "Product added successfully" });
+    res.status(200).json({success: true, message: "Product added successfully" });
   } catch (error) {
     console.error("Error adding product:", error);
-    res.status(500).json({ message: "Error adding product" });
+    res.status(500).json({ success: false, message: "Error adding product" });
   }
 };
 //function for list products
 const listProducts = async (req, res) => {
     try {
        const products=await productModel.find({}).sort({createdAt:-1});
-       res.status(200).json({products})
+       res.status(200).json({success: true, products})
     } catch (error) {
         console.error("Error listing products:", error);
-        res.status(500).json({ message: "Error listing products" });
+        res.status(500).json({ success: false, message: "Error listing products" });
     }
 };
 //function for remove products
 const removeProduct = async (req, res) => {
     try {
         await productModel.findByIdAndDelete(req.body.id);
-        res.status(200).json({ message: "Product removed successfully" });
+        res.status(200).json({ success: true, message: "Product removed successfully" });
     } catch (error) {
         console.error("Error removing product:", error);
-        res.status(500).json({ message: "Error removing product" });
+        res.status(500).json({ success: false, message: "Error removing product" });
     }
 };
 
@@ -78,10 +78,10 @@ const singleProductDetails = async (req, res) => {
     try {
      const {productId}=req.body;
      const product=await productModel.findById(productId);
-     res.status(200).json({product})
+     res.status(200).json({success: true, product})
     } catch (error) {
         console.error("Error fetching product details:", error);
-        res.status(500).json({ message: "Error fetching product details" });
+        res.status(500).json({ success: false, message: "Error fetching product details" });
     }
 };
 export { addProduct, listProducts, removeProduct, singleProductDetails };
