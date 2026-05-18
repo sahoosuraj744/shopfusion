@@ -17,9 +17,9 @@ const loginUser = async (req, res) => {
     if (isMatch) {
       const token = createToken(user._id);
     
-      return res.status(200).json({ message: "Login successful", token });
+      return res.status(200).json({success: true, message: "Login successful", token });
     } else {
-      return res.status(400).json({ message: "Invalid Password" });
+      return res.status(400).json({ success: false, message: "Invalid Password" });
     }
   } catch (error) {
     console.log(error);
@@ -32,17 +32,17 @@ const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ success: false, message: "User already exists" });
     }
 
     //validatiing userformat and strong password
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ message: "Please enter a valid email" });
+      return res.status(400).json({success: false, message: "Please enter a valid email" });
     }
     if (password.length < 8) {
       return res
         .status(400)
-        .json({ message: "Password must be at least 8 characters long" });
+        .json({ success: false, message: "Password must be at least 8 characters long" });
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
