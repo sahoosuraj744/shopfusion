@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { backendUrl,currency } from "../App";
 import { toast } from "react-toastify";
-const List = () => {
+const List = ({token}) => {
   const [list, setList] = useState([]);
   const fetchList = async () => {
     try {
@@ -17,6 +17,21 @@ const List = () => {
       toast.error(response.data.message);
     }
   };
+  const removeProduct=async(id)=>{
+    try {
+      const response=await axios.delete(backendUrl+"/api/product/remove",{data:{id},headers:{token }});
+      if(response.data.success){
+        toast.success(response.data.message);
+       await fetchList();
+      }else{
+        toast.error("Failed to remove product");
+      }
+    } catch (error) {
+      console.error("Error removing product:", error);
+      toast.error("Failed to remove product");
+    }
+  }
+
   useEffect(() => {
     fetchList();
   }, [list]);
@@ -41,7 +56,9 @@ const List = () => {
             <p>{item.name}</p>
             <p>{item.category}</p>
             <p>{currency}{item.price.toFixed(2)}</p>
-            <p className="text-right md:text-center cursor-pointer text-lg">X</p>
+            <p className="text-right md:text-center cursor-pointer text-lg" onClick={() => removeProduct(item._id)}>
+              X
+            </p>
           </div>
          ))
         }
