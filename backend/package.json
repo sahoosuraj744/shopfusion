@@ -8,6 +8,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server":"nodemon server.js"
+    "server": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "express-async-handler": "^1.2.0"
   }
 }
