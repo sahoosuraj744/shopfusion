@@ -7,6 +7,7 @@ const ShopContextProvider = (props) => {
   const currency = "₹";
   const delivery_fee = 10;
   const backend_url = import.meta.env.VITE_BACKEND_URL;
+ 
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   // const [cartItems, setCartItems] = useState({});
@@ -17,9 +18,9 @@ const ShopContextProvider = (props) => {
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState("");
   const navigate = useNavigate();
-  useEffect(()=>{
-  localStorage.setItem("cartItems", JSON.stringify(cartItems));
-},[cartItems])
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
   const addToCart = async (itemId, size) => {
     if (!size) {
       toast.error("Select Product Size");
@@ -38,7 +39,6 @@ const ShopContextProvider = (props) => {
     }
     setCartItems(cartData);
     localStorage.setItem("cartItems", JSON.stringify(cartData));
-   
 
     if (token) {
       try {
@@ -77,7 +77,7 @@ const ShopContextProvider = (props) => {
     setCartItems(cartData);
     if (token) {
       try {
-      console.log(backend_url + "/api/cart/update");
+        console.log(backend_url + "/api/cart/update");
         await axios.post(
           backend_url + "/api/cart/update",
           { itemId, size, quantity },
@@ -118,7 +118,7 @@ const ShopContextProvider = (props) => {
   const getProductsData = async () => {
     try {
       const response = await axios.get(backend_url + "/api/product/list");
-     
+
       if (response.data.success) {
         setProducts(response.data.products);
       } else {
@@ -138,7 +138,6 @@ const ShopContextProvider = (props) => {
 
       if (response.data.success) {
         setCartItems(response.data.cartData);
-        toast.success("Cart data fetched successfully");
       } else {
         toast.error(response.data.message);
       }
@@ -155,7 +154,6 @@ const ShopContextProvider = (props) => {
     if (!token && localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
       getUserCart(localStorage.getItem("token"));
-   
     }
   }, []);
   const value = {
