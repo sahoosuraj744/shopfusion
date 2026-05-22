@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/product", productRouter);
 app.listen(port, (req, res) => {
   console.log(`App is listening on port ${port}`);
 });
-app.use("/api/product", productRouter);

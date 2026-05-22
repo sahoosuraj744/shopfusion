@@ -5,24 +5,35 @@ import { assets } from "../assets/assets";
 import CartTotal from "../components/CartTotal";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity,navigate } =
-    useContext(ShopContext);
+  const {
+    cartItems,
+    products,
+    currency,
+    updateQuantity,
+    token,
+    backend_url,
+    navigate,
+  } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
   useEffect(() => {
-    const tempData = [];
-    for (const items in cartItems) {
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) {
-          tempData.push({
-            _id: items,
-            size: item,
-            quantity: cartItems[items][item],
-          });
+    if (products.length > 0) {
+      const tempData = [];
+      for (const items in cartItems) {
+        for (const item in cartItems[items]) {
+          if (cartItems[items][item] > 0) {
+            tempData.push({
+              _id: items,
+              size: item,
+              quantity: cartItems[items][item],
+            });
+          }
         }
       }
+      setCartData(tempData);
     }
-    setCartData(tempData);
-  }, [cartItems]);
+  }, [cartItems, products]);
+  //
+
   return (
     <div className="border-t pt-14">
       <div className="text 2xl mb-3">
@@ -33,6 +44,7 @@ const Cart = () => {
           const productData = products.find(
             (product) => product._id === item._id,
           );
+          if (!productData) return null;
           return (
             <div
               key={index}
@@ -42,7 +54,7 @@ const Cart = () => {
                 <img
                   className="w-16 sm:w-20"
                   src={productData.image[0]}
-                  alt=""
+                  alt={productData.name}
                 />
                 <div>
                   <p className="text-xs sm:text-lg font-medium">
@@ -88,9 +100,14 @@ const Cart = () => {
       <div className="flex justify-end my-20">
         <div className="w-full sm:w-[450px]">
           <CartTotal />
-           <div className="w-full text-end ">
-            <button onClick={()=>navigate('/place-order')} className="bg-black text-white text-sm my-8 px-8 py-3">PROCEED TO CHECKOUT</button>
-           </div>
+          <div className="w-full text-end ">
+            <button
+              onClick={() => navigate("/place-order")}
+              className="bg-black text-white text-sm my-8 px-8 py-3"
+            >
+              PROCEED TO CHECKOUT
+            </button>
+          </div>
         </div>
       </div>
     </div>
