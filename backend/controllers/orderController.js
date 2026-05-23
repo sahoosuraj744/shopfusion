@@ -31,7 +31,16 @@ const placeOrderRazorpay = async (req, res) => {};
 const allOrders = async (req, res) => {};
 //User order data for frontend
 
-const userOrders = async (req, res) => {};
+const userOrders = async (req, res) => {
+    try {
+        const userId=req.userId;
+        const orders=await orderModel.find({userId })
+        res.status(200).json({success:true,orders})
+    } catch (error) {
+       console.log(error);
+    res.status(404).json({ success: false, message: error.message });
+    }
+};
 //updatre order status from admin panel
 const updateStatus = async (req, res) => {};
 export {

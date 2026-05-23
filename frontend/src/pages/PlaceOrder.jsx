@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
   const {
@@ -67,13 +68,12 @@ const PlaceOrder = () => {
             orderData,
             { headers: { token } },
           );
-          console.log(response.data);
+
           if (response.data.success) {
             setCartItems({});
             navigate("/orders");
           } else {
             console.log(response.data.message);
-          
           }
           break;
         default:
