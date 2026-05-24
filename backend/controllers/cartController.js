@@ -64,7 +64,7 @@ const updateCart = async (req, res) => {
 // get user cart
 const getUserCart = async (req, res) => {
     try {
-        const { userId } = req; // verified via your auth middleware
+       const userId=req.userId;// verified via your auth middleware
         const userData = await userModel.findById(userId);
         
         // 1. ADD THIS SAFETY CHECK
