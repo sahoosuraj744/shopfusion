@@ -82,13 +82,13 @@ const Orders = () => {
 
                   <p className="text-sm md:text-base">{order.status}</p>
                 </div>
-                <button
+                {/* <button
                   type="button"
                   onClick={() => loadOrderData(item._id)}
                   className="border px-4 py-2 text-sm font-medium rounded-sm"
                 >
                   Track Order
-                </button>
+                </button> */}
               </div>
             </div>
           )),
