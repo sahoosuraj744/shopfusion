@@ -20,7 +20,7 @@ const allowedOrigins = [
   "http://localhost:5174",
   "https://shopfusion-backend.vercel.app",
   "https://shopfusion-frontend.vercel.app",
-  "https://shopfusion-admin.vercel.app"
+ 
 ];
 // const allowedOrigins = [ "https://shopfusion-backend.vercel.app","https://shopfusion-frontend.vercel.app/","https://shopfusion-admin.vercel.app/"];
 app.use(
