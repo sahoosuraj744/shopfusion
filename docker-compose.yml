@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-runtime
+    container_name: shopfusion-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      # Add your environment variables here
+      # - MONGODB_URI=mongodb+srv://user:[REDACTED]@cluster.mongodb.net/db
+      # - JWT_SECRET=your-secret-key
+      # - CLOUDINARY_NAME=your-name
+      # - CLOUDINARY_API_KEY=your-key
+      # - CLOUDINARY_API_SECRET=your-secret
+    env_file:
+      - .env
+    networks:
+      - app-network
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/node_modules
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: shopfusion-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:4000
+    env_file:
+      - .env
+    networks:
+      - app-network
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - /app/node_modules
+    develop:
+      watch:
+        - path: ./frontend/src
+          action: rebuild
+        - path: ./frontend/package.json
+          action: rebuild
+
+networks:
+  app-network:
+    driver: bridge
